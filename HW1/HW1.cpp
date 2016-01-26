@@ -156,6 +156,8 @@ double SimpsonN(double(*f)(double), double a, double b, double n){
 	for(int i =0; i<n; i++){
 		I+=f(x[i])*coeffs[i];
 	}
+	delete x;
+	delete coeffs;
 	return I*h;
 
 }
@@ -194,7 +196,10 @@ int main(){
 	cout<< "exact: "<<I << " approximation S38: "<< S38 <<endl << "|I-s38|= "<<I-S38<< endl << "|I-s38|/I = "<< (I-S38)/I<<endl;
 	/////////////////
 
-	double N = FindN(0.0001,I,0.0,1.0);
+	double N = FindN(0.1,I,0.0,1.0);
+	N = FindN(0.01,I,0.0,1.0);
+	N = FindN(0.001,I,0.0,1.0);
+	N = FindN(0.0001,I,0.0,1.0);
 
 	//#3
 	/*Read in matrices and do matrix operations
