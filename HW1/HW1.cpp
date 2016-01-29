@@ -191,9 +191,9 @@ int main(){
 	*/
 	double I = 0.171738158;
 	double S = Simpson(hw1function, 0.0,1.0,(b-a)/2);
-	cout<< "exact: "<<I << " approximation S: "<< S <<endl << "|I-s|= "<<I-S<< endl << "|I-s|/I = "<< (I-S)/I<<endl;
+	//cout<< "exact: "<<I << " approximation S: "<< S <<endl << "|I-s|= "<<I-S<< endl << "|I-s|/I = "<< (I-S)/I<<endl;
 	double S38 = Simpson38(hw1function,0.0,1.0);
-	cout<< "exact: "<<I << " approximation S38: "<< S38 <<endl << "|I-s38|= "<<I-S38<< endl << "|I-s38|/I = "<< (I-S38)/I<<endl;
+	//cout<< "exact: "<<I << " approximation S38: "<< S38 <<endl << "|I-s38|= "<<I-S38<< endl << "|I-s38|/I = "<< (I-S38)/I<<endl;
 	/////////////////
 
 	double N = FindN(0.1,I,0.0,1.0);
