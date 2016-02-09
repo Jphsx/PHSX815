@@ -8,7 +8,7 @@ using namespace std;
 //GLOBAL variables for Func1 i.e. initial conditions for better abstraction with RK4 and Euler
 //initial mass, length, and gravity for pendulum
 double m,l,g;
-
+double theta0, omega0;
 //
 
 //first of coupled ODEs ( d^2 theta / dt^2 ) = -g/l sin(theta)
@@ -21,6 +21,13 @@ double Func2(double omega){
 }
 double Func3(double theta,double omega ){
 	return -(g/l)*sin(theta) -0.01*omega;
+}
+double getEnergy(double y1, double y2){
+	//return 0.5*m*l*(2.0*g/l)*(cos(y1)-cos(theta0)) + m*g*l*(1.0-cos(y1));
+	return 0.5*m*l*y2*y2 + m*g*l*(1 - cos(y1));
+}
+double Vcheck(double theta){
+	return sqrt( (2.0*g/l)*(cos(theta) - cos(theta0))   );
 }
 //generates y1_n+1 and y2_n+1 ( y1=theta, y2=omega) by 4th order Runge-Kutta method with 2 coupled ODEs and step dt
 //uses function pointers for set of ODEs f1 is func1, f2 is func2
@@ -69,36 +76,44 @@ void generateSequence(bool toScreen, double y1, double y2, double dt, int N, dou
 	file.open(path,std::ofstream::out | std::ofstream::app);
 	file<<setprecision(15);
 	cout<<setprecision(15);
-	//file output format y1 y2 dt t
+	//file output format y1 y2 E dt t omegaCheck ECheck
+	
 	
 	//assume time always starts at 0
-	file<<y1<<" "<<y2<<" "<<dt<<" "<<0.0<<endl;
-	if(toScreen) cout<<y1<<" "<<y2<<" "<<dt<<" "<<0.0<<endl;
+	file<<y1<<" "<<y2<<" "<<getEnergy(y1,y2)<<" "<<dt<<" "<<0.0<<" "<<Vcheck(y1)<<" "<<getEnergy(y1,Vcheck(y1)) <<endl;
+	if(toScreen) cout<<y1<<" "<<y2<<" "<<getEnergy(y1,y2)<<" "<<dt<<" "<<0.0<<endl;
 
 	double* y = method(y1,y2,dt,f1,f2);
 	for(int i = 1; i<N; i++){
-		file<<y[0]<<" "<<y[1]<<" "<<dt<<" "<<dt*i<<endl;
+		file<<y[0]<<" "<<y[1]<<" "<<getEnergy(y[0],y[1])<<" "<<dt<<" "<<dt*i<<" "<<Vcheck(y[0])<<" "<<getEnergy(y[0],Vcheck(y[0]))<<endl;
 		if(toScreen) cout<<y[0]<<" "<<y[1]<<" "<<dt<<" "<<dt*i<<endl;
 		y = method(y[0],y[1],dt,f1,f2);	
 	}
 
 	file.close();
 }
+
 void cleanFiles(){
-	ofstream file1, file2;
+	ofstream file1, file2, file3, file4;
 	file1.open("RK4.txt");
 	file2.open("Euler.txt");
+	file3.open("EulerDamp.txt");
+	file4.open("RK4Damp.txt");
 	file1<<endl;
 	file2<<endl;
+	file3<<endl;
+	file4<<endl;
 	file1.close();
-	file2.close();		
+	file2.close();	
+	file3.close();
+	file4.close();	
 }
 
 int main(){
 
 	//initial conditions: mass, length, gravity, angular displacement, angular velocity in kg, m, m/s^2, rad, rad/s respectively
 	//m,l,g defined globally for Func1, so RK4 is more abstract
-	double theta0,omega0;
+	//double theta0,omega0;
 	m = 1.0;
 	l = 2.0;
 	g = 9.80;
@@ -112,7 +127,7 @@ int main(){
 	generateSequence(false,theta0,omega0,0.01,(int)(10.0/0.01),Func1,Func2,RK4,"RK4.txt");
 	generateSequence(false,theta0,omega0,0.0001,(int)(10.0/0.0001),Func1,Func2,RK4,"RK4.txt");
 	generateSequence(false,theta0,omega0,0.01,(int)(10.0/0.01),Func1,Func2,Euler,"Euler.txt");
-	generateSequence(false,theta0,omega0,0.0001,15,Func1,Func2,Euler,"Euler.txt");
+	generateSequence(false,theta0,omega0,0.0001,(int)(10.0/0.0001),Func1,Func2,Euler,"Euler.txt");
 
 	//damped runs 10s
 	generateSequence(false,theta0,omega0,0.01,(int)(10.0/0.01),Func3,Func2,RK4,"RK4Damp.txt");
