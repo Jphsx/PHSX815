@@ -24,7 +24,7 @@ double Func3(double theta,double omega ){
 }
 double getEnergy(double y1, double y2){
 	//return 0.5*m*l*(2.0*g/l)*(cos(y1)-cos(theta0)) + m*g*l*(1.0-cos(y1));
-	return 0.5*m*l*y2*y2 + m*g*l*(1 - cos(y1));
+	return 0.5*m*l*l*y2*y2 + m*g*l*(1 - cos(y1));
 }
 double Vcheck(double theta){
 	return sqrt( (2.0*g/l)*(cos(theta) - cos(theta0))   );
@@ -39,18 +39,18 @@ double* RK4( double y1, double y2, double dt, double(*f1)(double,double), double
 	//l1 = dt * k1;
 	//cout<<k1<<" "<<l1<<endl;
 
-	k2 = dt * f1(y1 + l1/2, y2);
+	k2 = dt * f1(y1 + l1/2, y2 + k1/2);
 	l2 = dt * f2(y2 + k1/2);
 	//l2 = dt * k2;
 	//cout<<k2<<" "<<l2<<endl;
 
-	k3 = dt * f1(y1 + l2/2, y2);
+	k3 = dt * f1(y1 + l2/2, y2 + k2/2);
 	l3 = dt * f2(y2 + k2/2);
 	//l3 = dt * k3;
 	//cout<<k3<<" "<<l3<<endl;
 
-	k4 = dt * f1(y1 + l3/2, y2);
-	l4 = dt * f2(y2 + k3/2);
+	k4 = dt * f1(y1 + l3, y2 + k3);
+	l4 = dt * f2(y2 + k3);
 	//l4 = dt * k4;
 	//cout<<k4<<" "<<l4<<endl;
 	
