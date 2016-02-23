@@ -1,5 +1,5 @@
 D = dlmread('measurements.dat');
-deg=10;
+deg=7;
 %make sets of plots and fits for polynomial up to degree 6
 %for a given model ndf =n - deg+1
 for i=0:deg;
@@ -13,10 +13,9 @@ for i=0:deg;
     %compute chisq and p value
     ChisqVec =( (D(:,2)-Yhat)./(D(:,3)) ).^2 ;
     Chisq = sum(ChisqVec,1);
-    pValue = chisqpdf(Chisq,size(D,1)-i+1);
-   
-   
- 
+    ndf = size(D,1)-(i+1);
+    pValue = 1- integral(@(p)chisqpdf(p,ndf),0,Chisq);
+  
     plot(D(:,1), Yhat );
      text(min(D(:,1)),max(D(:,2)),['$\chi^{2}$ = ',num2str(Chisq)],'interpreter','latex');
      text(min(D(:,1)),max(D(:,2))-0.05, [ 'pValue =' , num2str(pValue)],'interpreter','latex'); 

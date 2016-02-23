@@ -27,7 +27,8 @@ double getEnergy(double y1, double y2){
 	return 0.5*m*l*l*y2*y2 + m*g*l*(1 - cos(y1));
 }
 double Vcheck(double theta){
-	return sqrt( (2.0*g/l)*(cos(theta) - cos(theta0))   );
+	//if( (2.0*g/l)*(cos(theta) - cos(theta0)) <0.0) cout<<"NEGATIVE "<< (2.0*g/l)*(cos(theta) - cos(theta0))<<endl;
+	return (2.0*g/l)*(cos(theta) - cos(theta0)) ;
 }
 //generates y1_n+1 and y2_n+1 ( y1=theta, y2=omega) by 4th order Runge-Kutta method with 2 coupled ODEs and step dt
 //uses function pointers for set of ODEs f1 is func1, f2 is func2
@@ -61,10 +62,11 @@ double* RK4( double y1, double y2, double dt, double(*f1)(double,double), double
 	//cout<<y[1]<< " "<<y[0]<<endl;
 	return y;
 }
+//y[1] = omega y[0] = theta y1=theta y2=omega
 double * Euler( double y1, double y2, double dt, double(*f1)(double,double), double(*f2)(double)){
 	double* y = new double[2];
 	y[1] = y2 + dt*f1(y1,y2);
-	y[0] = y1 + y[1]*dt;
+	y[0] = y1 + y2*dt; //from y[1] -> y2 was using Euler-Cromer
 	return y;
 }
 //generates dataset with given intital conditions and writes to file
@@ -130,9 +132,9 @@ int main(){
 	generateSequence(false,theta0,omega0,0.0001,(int)(10.0/0.0001),Func1,Func2,Euler,"Euler.txt");
 
 	//damped runs 10s
-	generateSequence(false,theta0,omega0,0.01,(int)(10.0/0.01),Func3,Func2,RK4,"RK4Damp.txt");
+	generateSequence(false,theta0,omega0,0.01,(int)(1000.0/0.01),Func3,Func2,RK4,"RK4Damp.txt");
 	generateSequence(false,theta0,omega0,0.0001,(int)(10.0/0.0001),Func3,Func2,RK4,"RK4Damp.txt");
-	generateSequence(false,theta0,omega0,0.01,(int)(10.0/0.01),Func3,Func2,Euler,"EulerDamp.txt");
+	generateSequence(false,theta0,omega0,0.01,(int)(1000.0/0.01),Func3,Func2,Euler,"EulerDamp.txt");
 	generateSequence(false,theta0,omega0,0.0001,(int)(10.0/0.0001),Func3,Func2,Euler,"EulerDamp.txt");
 
 

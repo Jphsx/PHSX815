@@ -4,21 +4,22 @@
  D3 = dlmread('Euler.txt');
  D4 = dlmread('EulerDamp.txt');
  dt = D1(:,4);
+ dtlong = D4(:,4);
  %data goes theta, omega, E, dt, T, <v>, <E>
  
  %RK4 sets
  RK4_01 = D1(dt > 0.0001, :);
  RK4_0001 = D1(dt < 0.01, :);
  %RK4 damped sets
- RK4d_01 = D2(dt > 0.0001, :);
- RK4d_0001 = D2(dt < 0.01, :);
+ RK4d_01 = D2(dtlong > 0.0001, :);
+ RK4d_0001 = D2(dtlong < 0.01, :);
  
  %Euler sets
  Eul_01 = D3(dt > 0.0001, :);
  Eul_0001 = D3(dt < 0.01, :);
  %Euler damped sets
- Euld_01 = D4(dt > 0.0001, :);
- Euld_0001 = D4(dt < 0.01, :);
+ Euld_01 = D4(dtlong > 0.0001, :);
+ Euld_0001 = D4(dtlong < 0.01, :);
  
  
  

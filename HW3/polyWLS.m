@@ -16,3 +16,4 @@ function [B,Yhat] = polyWLS(X,Y,sigma_Y,deg)
    %pad B with zeros to be returned with Y model estimate
    B = [ B; zeros(size(Yhat,1)-size(B,1),1)];
 end
+
