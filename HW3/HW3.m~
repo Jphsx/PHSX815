@@ -1,6 +1,6 @@
 
 D = dlmread('measurements.dat');
-deg=6;
+deg=3;
 %make sets of plots and fits for polynomial up to degree 6
 %for a given model ndf =n - deg+1
 for i=0:deg;
@@ -32,6 +32,5 @@ for i=0:deg;
     title('$\chi^{2}$ histogram','interpreter','latex');
     
     % report paramters and error matrix, but trim padding
-    B = B(1:i+1,:)
-    Berr = Berr(1:i+1,:)
+    
 end

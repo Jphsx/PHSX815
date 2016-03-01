@@ -1,0 +1,71 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\begin{document}
+
+
+ 
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Justin Anguiano 2700353}
+\lhead{PHSX 815 HW3}
+\section{Introduction}
+To solve the least squares problem for $n$-dimensional matrices with a $n$-degree polynomial we define the problem as
+\begin{equation}
+Y = X\beta
+\end{equation}
+with $X$ as the independent model variables, with coefficients $\beta$, and dependent observations $Y$ such that
+\begin{equation}
+X=
+\begin{bmatrix}
+    x_{0} & x_{0}^{2} & \dots  & x_{0}^{p} \\
+    x_{1} & x_{1}^{2}  & \dots  & x_{1}^{p} \\
+    \vdots & \vdots  & \ddots & \vdots \\
+    x_{n} & x_{n}^{2} & \dots  & x_{n}^{p}
+\end{bmatrix}
+\quad Y=
+\begin{bmatrix}
+	y_{0} \\
+	\vdots \\
+	y_{n} 
+\end{bmatrix}
+\quad \beta=
+\begin{bmatrix}
+	\beta_{0} \\
+	\vdots \\
+	\beta_{n}
+\end{bmatrix}
+\end{equation}
+where $n$ is the number of samples and $p$ is the degree of the polynomial model. To obtain the optimal parameters $\beta$ that best fit the data set, we introduce the error on the observations $Y$ with weight matrix $W$.
+\begin{equation}
+W = 
+\begin{bmatrix}
+\sigma_{0}^{-1} & & & \\
+ & \sigma_{1}^{-1} & & \\
+ & & \ddots & \\
+ & & & \sigma_{n}^{-1}
+\end{bmatrix}
+\end{equation}
+The optimal parameters are found from solving
+\begin{equation}
+\hat{\beta} = \underset{\beta}{\text{min}} || W(Y-X\beta)||_{2}^{2}
+\end{equation}
+which has the same general form of the $\chi^{2}$. The solution for the optimized $\beta$ estimates is 
+\begin{equation}
+\hat{\beta} = (X^{T}W^{T}WX)^{-1}X^{T}W^{T}WY
+\end{equation}
+with the error matrix for the $\beta$ parameters given by
+\begin{equation}
+V(\beta) = (X^{T}W^{T}WX)^{-1}
+\end{equation}
+
+
+\section{Program}
+The program works by reading in a data set into $n \times 1$ matrices for $x$, $y$, $\sigma_y$.  The program uses a generic least squares function that formats the weight matrix based on the input matrices and returns the fit parameters for a arbitrary polynomial model of degree $n$. The function also returns the fit generated $y$ values from the $x$ data and the error matrix for the fit parameters.  The program then plots the original data with the fitted curve along with a histogram of the $\chi^{2}$ values.  The $\chi^{2}$ value along with the associated $p$-value drawn on each plot. When the program is run, it iteratively makes fits from 0 to an arbitrary degree $p$ and prints the fit parameters and error matrix to the screen.
+
+
+
+\end{document}
