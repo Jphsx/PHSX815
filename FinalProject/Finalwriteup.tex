@@ -1,0 +1,21 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Justin Anguiano 2700353}
+\lhead{PHSX 815 Final Project Pandemic Simulation}
+\begin{document}
+
+\section{Introduction}
+The proram simulates an arbitrary pandemic on an arbitrary planet of radius R. The simulation creates a population of individuals to inhabit the planet. Each individual has a spherical coordinate $(r,\theta,\phi)$ and four possible states: susceptible to disease, exposed to disease, infectious, and immune/recovered.  When constructing the population N individuals are given an random spherical vector to represent their random position on the surface of the planet.  The disease to be simulated on the planet has two modes 0, and 1. Mode 0 is a spatially certain type, such that infection is spread with 100$\%$ probability between two individuals within a critical angle $\theta_c$; where $\theta_c$ is the opening angle between the individual spherical position vectors.  The secondary mode is spatially probable, such that infection is spread with probability $e^{-\frac{1}{2}(\frac{\Delta\theta}{\sigma_\theta})^2}$ where $\Delta\theta$ is again the opening angle between individuals and $\sigma_\theta$ tunes the width of possible exposure.  When the pandemic is initialized, $n$ random individuals are selected to be initially infected and $x$ random individuals are randomly selected to be initially immune. When an individual becomes infected, their state changes.  An infected person changes from susceptible to no longer susceptible, while exposed and infectious become true.  The individual remains infectious and able to transmit the disease to another susceptible individual for an arbitrary amount of days.  Once the amount of infectious days has passed, the individual becomes immune and insusceptible to infection.  After the initial infections and inoculations each individual undergoes a movement for the day , with angular displacement less than or equal to some angular velocity $\omega$.  After each movement of each individual in a random direction, the probability to spread the disease from infected individuals to nearby susceptible individuals is calculated.  The simulation is completed when there are no infectious individuals within the population.  The variables tracked by the simulation the number of secondary infections produced from the first day, the number of days it takes to have no infectious individuals, and the infection rate, which is the ratio of exposed individuals to total population. The pandemic model's transmission variables are the target of exploration, $\theta_c$ and $\sigma_\theta$.
+
+\section{Analysis}
+The simulation output is contained in plotting.pdf. For this analysis the initial parameters used were, $n=1$ initially infected individuals, $x=0$ initially immune individuals, a population size of $N=1000$, and a planet size of $R=1$.  Three models were tested: The static ($\omega = 0$) spatially certain model, the mobile ($\omega = 20$mrads) spatially certain model, and the static spatially probable model. The $\theta_c$ space was explored for the spatially certain models, and the $\sigma_\theta$ space was explored for the spatially probable model.  The resulting tests were very similar for all three models. The turning point for the disease, where the disease starts to spread most aggressively, occurs around $10$mrads.  For all three models the infection rate is constant at $100\%$ after this point. The number of days of infectiousness in the population is inversely proportional with the number of secondary infections. The number of days of infection peaks around around $10$mrads where the disease is propagating efficiently on a daily basis, but not infecting more than half of the population in a single day.
+
+
+\end{document}

@@ -1,0 +1,29 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\begin{document}
+
+\section{Introduction}
+Starting from the 2-d Laplace equation for potential
+\begin{equation}
+\frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = 0
+\end{equation}
+The potential at everywhere in a $H \times L$ region can be solved with the Jacobi relaxation algorithm.  The algorithm iteratively produces new estimates for the potential at point $V(i,j)$ based on the initial boundary conditions and surrounding potential estimates. By approximating the second derivatives using finite differences, the algorithm takes the form 
+\begin{equation}
+	V_{new}(i,j) = \frac{1}{4} [ V_{old}(i+1,j)+V_{old}(i-1,j)+V_{old}(i,j+1)+V_{old}(i,j-1) ]
+\end{equation}
+The conditions for this particular problem include two parallel plates at a fixed potential inside a $H \times L$ region. The separation of the plates is represented by $\Delta x = L/4$, the height of the plates is $h= L/2$, and the thickness of the plates is given by $t$
+
+\section{Program}
+The program supports any value for length $L$ and height $H$, for the matrix region. It also supports any thickness $t$, and any fixed plate potential $V_{pl}$. Each position in the matrix represents one unit of distance $r$ with boundary conditions (matrix edges) such that the potential $V(r) = 0$ at $r=L,H$ . For values of $L$ that cause a loss of symmetry in the matrix, i.e. the plates are not exactly centered, the program takes into account the offset and adjusts the boundary conditions around the outside edges of the matrix accordingly.  \\
+When the boundary conditions have been set, the new set of potentials based on the relaxation algorithm are computed by iterating through the matrix and stored in a duplicate matrix. After the full matrix iteration, the new values are copied from the duplicate matrix back into the original matrix.  This process continues until the sum of potential differences between old and new matrices are within some arbitrary $\epsilon$ value.\\
+For the case of a square box such that $H=L$, the electric field is uniform between the plates with symmetric potentials about $\Delta x /2.$ as $L \rightarrow \infty$ then the potential starts to look more like $V \propto 1/r$. But when $L$ is small the potential is reduced by a larger factor over a smaller distance.  For the case of the rectangular box such that $H =2L$ the fringe effects are less pronounced with the electric field directions perpendicular to the plates.  When the thickness of the plates increases, the solution remains is the same, but requires less iterations.
+
+
+
+
+
+
+\end{document}
